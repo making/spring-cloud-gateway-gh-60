@@ -1,0 +1,27 @@
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: original
+        uri: http://httpbin.org
+        predicates:
+        - Host=original.example.com
+        filters:
+        - RemoveResponseHeader=X-Powered-By
+        - RemoveResponseHeader=Via
+        - RemoveResponseHeader=Server
+      - id: fixed
+        uri: http://httpbin.org
+        predicates:
+        - Host=fixed.example.com
+        filters:
+        - MyRemoveResponseHeader=X-Powered-By
+        - MyRemoveResponseHeader=Via
+        - MyRemoveResponseHeader=Server
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
